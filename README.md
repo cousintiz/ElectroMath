@@ -1,7 +1,3 @@
-Below is an updated **README** (or project overview) for your Resistor Calculator, reflecting that **anybody can use it**, and it was created in **2023** to save time and effort over manual calculations. Feel free to customize or expand as needed.
-
----
-
 ## Resistor Calculator – README
 
 **Website**: [https://rescalcs.netlify.app/](https://rescalcs.netlify.app/)
@@ -70,6 +66,3 @@ This project is **open source** under an MIT License (or your chosen license). A
 - **Website**: [https://rescalcs.netlify.app/](https://rescalcs.netlify.app/)  
 - **Issues/Requests**: Open a ticket in the GitHub repo (if public) or contact the maintainer directly.
 
----
-
-Enjoy saving time and effort with Resistor Calculator, and feel free to adapt or improve it to suit your needs!
