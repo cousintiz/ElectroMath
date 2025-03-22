@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Professional Resistor Calculator</title>
+  <!-- Bootstrap CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <!-- Optional: Font Awesome for icons -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+  />
+  <style>
+    /* Light theme defaults */
+    body {
+      background-color: #f8f9fa;
+      color: #212529;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    nav.navbar {
+      margin-bottom: 2rem;
+      transition: background-color 0.3s;
+    }
+    .nav-link {
+      cursor: pointer;
+    }
+    .card-header {
+      font-weight: 600;
+    }
+    .result-text {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+    #configImageContainer img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    /* Dark theme overrides */
+    .dark-theme {
+      background-color: #2c2c2c !important;
+      color: #f1f1f1 !important;
+    }
+    .dark-theme .navbar {
+      background-color: #444444 !important;
+    }
+    .dark-theme .navbar-brand,
+    .dark-theme .nav-link {
+      color: #f1f1f1 !important;
+    }
+    .dark-theme .btn.btn-secondary,
+    .dark-theme .btn.btn-primary {
+      background-color: #666666 !important;
+      border-color: #666666 !important;
+      color: #f1f1f1 !important;
+    }
+    .dark-theme .card {
+      background-color: #3a3a3a !important;
+      color: #f1f1f1 !important;
+    }
+    .dark-theme .card-header {
+      background-color: #444444 !important;
+    }
+    .dark-theme .table-bordered> :not(caption)>* {
+      border-color: #666666;
+    }
+    .dark-theme .table-light {
+      background-color: #444444;
+      color: #f1f1f1;
+    }
+    .dark-theme .alert-success {
+      background-color: #3f5c3f !important; /* Slightly dark green */
+      color: #e8ffe8 !important;
+      border-color: #4f7a4f !important;
+    }
+    .dark-theme .alert-info {
+      background-color: #2b5a76 !important;
+      color: #eaf6fb !important;
+      border-color: #35738e !important;
+    }
+    .dark-theme .text-danger {
+      color: #ffbcbc !important;
+    }
+
+    /* Footer styling */
+    footer {
+      border-top: 1px solid #ccc;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- Navigation bar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <span class="navbar-brand">
+      <i class="fa-solid fa-bolt"></i> Resistor Calculator Pro
+    </span>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <!-- Theme Toggle Icon -->
+        <li class="nav-item me-3">
+          <button class="btn btn-secondary" id="themeToggleBtn" onclick="toggleTheme()">
+            <i id="themeIcon" class="fa-solid fa-moon"></i>
+          </button>
+        </li>
+        <li class="nav-item">
+          <span class="nav-link" onclick="showSection('sectionHome')">Home</span>
+        </li>
+        <li class="nav-item">
+          <span class="nav-link" onclick="showSection('sectionCalculator')">Calculator</span>
+        </li>
+        <li class="nav-item">
+          <span class="nav-link" onclick="showSection('sectionColorCode')">Color Codes</span>
+        </li>
+        <li class="nav-item">
+          <span class="nav-link" onclick="showSection('sectionInfo')">Resistor Info</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Main container -->
+<div class="container">
+
+  <!-- Section: Home -->
+  <div id="sectionHome" class="mb-5">
+    <div class="row">
+      <div class="col">
+        <h2>Welcome to Resistor Calculator Pro</h2>
+        <p>
+          This tool provides easy-to-use calculators for common resistor configurations.
+          Whether you're dealing with simple series or parallel networks, transforming
+          delta to star (or star to delta), or combining series and parallel groups, we
+          have you covered. Built with a responsive design to work on PCs, tablets, and phones.
+        </p>
+        
+        <!-- Laws of Electricity Card -->
+        <div class="card mt-3 mb-3">
+          <div class="card-header">
+            Key Laws of Electricity
+          </div>
+          <div class="card-body">
+            <ul>
+              <li>
+                <strong>Ohm's Law (V = IR):</strong>
+                Voltage (V) across a resistor is the product of the current (I) flowing through it 
+                and its resistance (R).
+              </li>
+              <li>
+                <strong>Kirchhoff's Current Law (KCL):</strong>
+                The sum of currents flowing into a node equals the sum of currents flowing out of that node.
+              </li>
+              <li>
+                <strong>Kirchhoff's Voltage Law (KVL):</strong>
+                The sum of voltage drops around any closed loop in a circuit is zero.
+              </li>
+              <li>
+                <strong>Joule's Law (P = I²R):</strong>
+                The power (P) dissipated by a resistor is proportional to the square of the current 
+                (I) times the resistance (R).
+              </li>
+            </ul>
+            <p>
+              Understanding these laws is crucial for analyzing and designing electronic circuits.
+            </p>
+          </div>
+        </div>
+
+        <!-- Configurations overview -->
+        <div class="card mt-3">
+          <div class="card-header">
+            Resistor Configurations Overview
+          </div>
+          <div class="card-body">
+            <ul>
+              <li><strong>Series:</strong> Resistors in series add up to give the total resistance.</li>
+              <li><strong>Parallel:</strong> The reciprocal of the total resistance is the sum of the reciprocals of each resistor.</li>
+              <li><strong>Delta-Star &amp; Star-Delta:</strong> Converts a triangle (Δ) resistor network into a star (Y) network, or vice versa.</li>
+              <li><strong>Series-Parallel:</strong> Combines groups of series resistors that are then connected in parallel (or vice versa).</li>
+            </ul>
+            <button class="btn btn-primary" onclick="showSection('sectionCalculator')">
+              Go to Calculator
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section: Calculator -->
+  <div id="sectionCalculator" class="d-none">
+    <!-- Resistor Configuration Calculator -->
+    <div class="card mb-3">
+      <div class="card-header">
+        <i class="fa-solid fa-calculator"></i> Resistor Configuration Calculator
+      </div>
+      <div class="card-body">
+        <p>Select configuration type and enter resistor values:</p>
+
+        <!-- Configuration type -->
+        <div class="mb-3">
+          <label for="configType" class="form-label">Configuration Type</label>
+          <select id="configType" class="form-select">
+            <option value="series">Series</option>
+            <option value="parallel">Parallel</option>
+            <option value="delta-star">Delta to Star</option>
+            <option value="star-delta">Star to Delta</option>
+            <option value="series-parallel">Series-Parallel</option>
+          </select>
+        </div>
+
+        <!-- Image container for each config type -->
+        <div id="configImageContainer" class="mb-3 text-center">
+          <img
+            id="configImage"
+            src="img/series.png"
+            alt="Resistor Configuration Diagram"
+          />
+        </div>
+
+        <!-- Resistor values input -->
+        <div class="mb-3">
+          <label for="resistorsInput" class="form-label">
+            Enter Resistor Values (Ω)
+            <small class="text-muted">
+              <br/>
+              - For series-parallel, use semicolons to separate groups (e.g. "100,200;220,330")<br />
+              - For delta-star or star-delta, enter exactly 3 values (e.g. "100, 200, 300")
+            </small>
+          </label>
+          <input
+            type="text"
+            id="resistorsInput"
+            class="form-control"
+            placeholder="e.g. 100, 220, 330 or 100,200;220,330"
+          />
+        </div>
+
+        <!-- Calculate button -->
+        <button class="btn btn-primary" onclick="calculateResistance()">
+          Calculate
+        </button>
+
+        <!-- Results display -->
+        <div id="calcResult" class="mt-3"></div>
+      </div>
+    </div>
+
+    <!-- Resistance of a Conductor Calculator -->
+    <div class="card mb-3">
+      <div class="card-header">
+        <i class="fa-solid fa-bolt"></i> Resistance of a Conductor
+      </div>
+      <div class="card-body">
+        <p>
+          Calculate the resistance of a conductor using 
+          <strong>R = ρ × (L / A)</strong>, where:
+        </p>
+        <ul>
+          <li><strong>ρ</strong>: Resistivity (Ω·m)</li>
+          <li><strong>L</strong>: Length of the conductor (m)</li>
+          <li><strong>A</strong>: Cross-sectional area (m²)</li>
+        </ul>
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <label for="resistivity" class="form-label">Resistivity (ρ, Ω·m)</label>
+            <input
+              type="number"
+              step="any"
+              id="resistivity"
+              class="form-control"
+              placeholder="e.g. 1.68e-8 (for copper)"
+            />
+          </div>
+          <div class="col-md-4">
+            <label for="length" class="form-label">Length (L, m)</label>
+            <input
+              type="number"
+              step="any"
+              id="length"
+              class="form-control"
+              placeholder="e.g. 2"
+            />
+          </div>
+          <div class="col-md-4">
+            <label for="area" class="form-label">Cross-Sectional Area (A, m²)</label>
+            <input
+              type="number"
+              step="any"
+              id="area"
+              class="form-control"
+              placeholder="e.g. 1e-6"
+            />
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="calculateConductorResistance()">
+          Calculate
+        </button>
+        <div id="conductorResult" class="mt-3"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section: Color Code -->
+  <div id="sectionColorCode" class="d-none">
+    <div class="card mb-3">
+      <div class="card-header">
+        <i class="fa-solid fa-palette"></i> Resistor Color Code
+      </div>
+      <div class="card-body">
+        <p>
+          Identify resistor values by selecting the color bands below. (4-Band Example)
+        </p>
+
+        <!-- Color band selectors -->
+        <div class="row">
+          <div class="col-3">
+            <label for="band1" class="form-label">Band 1</label>
+            <select class="form-select" id="band1">
+              <option value="0">Black (0)</option>
+              <option value="1">Brown (1)</option>
+              <option value="2">Red (2)</option>
+              <option value="3">Orange (3)</option>
+              <option value="4">Yellow (4)</option>
+              <option value="5">Green (5)</option>
+              <option value="6">Blue (6)</option>
+              <option value="7">Violet (7)</option>
+              <option value="8">Gray (8)</option>
+              <option value="9">White (9)</option>
+            </select>
+          </div>
+          <div class="col-3">
+            <label for="band2" class="form-label">Band 2</label>
+            <select class="form-select" id="band2">
+              <option value="0">Black (0)</option>
+              <option value="1">Brown (1)</option>
+              <option value="2">Red (2)</option>
+              <option value="3">Orange (3)</option>
+              <option value="4">Yellow (4)</option>
+              <option value="5">Green (5)</option>
+              <option value="6">Blue (6)</option>
+              <option value="7">Violet (7)</option>
+              <option value="8">Gray (8)</option>
+              <option value="9">White (9)</option>
+            </select>
+          </div>
+          <div class="col-3">
+            <label for="bandMultiplier" class="form-label">Multiplier</label>
+            <select class="form-select" id="bandMultiplier">
+              <option value="1">Black (×1)</option>
+              <option value="10">Brown (×10)</option>
+              <option value="100">Red (×100)</option>
+              <option value="1000">Orange (×1k)</option>
+              <option value="10000">Yellow (×10k)</option>
+              <option value="100000">Green (×100k)</option>
+              <option value="1000000">Blue (×1M)</option>
+              <option value="10000000">Violet (×10M)</option>
+              <option value="0.1">Gold (×0.1)</option>
+              <option value="0.01">Silver (×0.01)</option>
+            </select>
+          </div>
+          <div class="col-3">
+            <label for="bandTolerance" class="form-label">Tolerance</label>
+            <select class="form-select" id="bandTolerance">
+              <option value="±1%">Brown (±1%)</option>
+              <option value="±2%">Red (±2%)</option>
+              <option value="±5%">Gold (±5%)</option>
+              <option value="±10%">Silver (±10%)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Color code button and result -->
+        <button class="btn btn-primary mt-3" onclick="calculateColorCode()">
+          Calculate Value
+        </button>
+        <div id="colorCodeResult" class="mt-3"></div>
+
+        <!-- Reference Table -->
+        <h5 class="mt-4">Resistor Color Code Reference</h5>
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead class="table-light">
+              <tr>
+                <th>Color</th>
+                <th>1<sup>st</sup> &amp; 2<sup>nd</sup> Band Digit</th>
+                <th>Multiplier</th>
+                <th>Tolerance</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Black</td>
+                <td>0</td>
+                <td>×1</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>Brown</td>
+                <td>1</td>
+                <td>×10</td>
+                <td>±1%</td>
+              </tr>
+              <tr>
+                <td>Red</td>
+                <td>2</td>
+                <td>×100</td>
+                <td>±2%</td>
+              </tr>
+              <tr>
+                <td>Orange</td>
+                <td>3</td>
+                <td>×1k</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>Yellow</td>
+                <td>4</td>
+                <td>×10k</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>Green</td>
+                <td>5</td>
+                <td>×100k</td>
+                <td>±0.5%</td>
+              </tr>
+              <tr>
+                <td>Blue</td>
+                <td>6</td>
+                <td>×1M</td>
+                <td>±0.25%</td>
+              </tr>
+              <tr>
+                <td>Violet</td>
+                <td>7</td>
+                <td>×10M</td>
+                <td>±0.1%</td>
+              </tr>
+              <tr>
+                <td>Gray</td>
+                <td>8</td>
+                <td>×100M</td>
+                <td>±0.05%</td>
+              </tr>
+              <tr>
+                <td>White</td>
+                <td>9</td>
+                <td>×1G</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>Gold</td>
+                <td>-</td>
+                <td>×0.1</td>
+                <td>±5%</td>
+              </tr>
+              <tr>
+                <td>Silver</td>
+                <td>-</td>
+                <td>×0.01</td>
+                <td>±10%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section: Resistor Info -->
+  <div id="sectionInfo" class="d-none">
+    <div class="card mb-3">
+      <div class="card-header">
+        <i class="fa-solid fa-info-circle"></i> About Resistors
+      </div>
+      <div class="card-body">
+        <p>
+          A <strong>resistor</strong> is a passive electronic component that implements electrical
+          resistance as a circuit element. They reduce current flow, adjust signal levels, divide
+          voltages, and more.
+        </p>
+        <ul>
+          <li><strong>Series:</strong> Resistors in series add directly.</li>
+          <li><strong>Parallel:</strong> The reciprocal of total resistance is the sum of reciprocals of each resistor.</li>
+          <li><strong>Delta-Star &amp; Star-Delta:</strong> Convert between Δ (triangle) and Y (star) configurations.</li>
+          <li><strong>Series-Parallel:</strong> Groups of series resistors connected in parallel or vice versa.</li>
+        </ul>
+        <p>
+          Use the calculator above to compute your resistor values quickly and accurately. 
+          Refer to the color code table to identify resistor markings with ease.
+        </p>
+      </div>
+    </div>
+  </div>
+
+</div> <!-- /container -->
+
+<!-- Footer (bottom of every page) -->
+<footer class="text-center py-3 mt-5">
+  © 2023 CousinTiz. All rights reserved.
+</footer>
+
+<!-- Bootstrap JS (Popper + Bootstrap) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Main JS code -->
+<script>
+  /************************************************************
+   * NAVIGATION: Show/hide sections
+   ************************************************************/
+  function showSection(sectionId) {
+    const sections = [
+      "sectionHome",
+      "sectionCalculator",
+      "sectionColorCode",
+      "sectionInfo"
+    ];
+    sections.forEach(id => {
+      document.getElementById(id).classList.add("d-none");
+    });
+    document.getElementById(sectionId).classList.remove("d-none");
+  }
+  // Start on Home by default
+  showSection("sectionHome");
+
+  /************************************************************
+   * THEME TOGGLER
+   ************************************************************/
+  function toggleTheme() {
+    const body = document.body;
+    const icon = document.getElementById("themeIcon");
+    body.classList.toggle("dark-theme");
+    // Update icon
+    if (body.classList.contains("dark-theme")) {
+      icon.classList.remove("fa-moon");
+      icon.classList.add("fa-sun");
+    } else {
+      icon.classList.remove("fa-sun");
+      icon.classList.add("fa-moon");
+    }
+  }
+
+  /************************************************************
+   * CALCULATOR: Update diagram images and compute results
+   ************************************************************/
+  const configImages = {
+    "series": "img/series.png",
+    "parallel": "img/parallel.png",
+    "delta-star": "img/delta_star.png",
+    "star-delta": "img/star_delta.png",
+    "series-parallel": "img/series_parallel.png"
+  };
+
+  // Update image when config type changes
+  document.getElementById("configType").addEventListener("change", function() {
+    updateConfigImage();
+  });
+
+  function updateConfigImage() {
+    const config = document.getElementById("configType").value;
+    const image = configImages[config] || "img/placeholder.png";
+    document.getElementById("configImage").src = image;
+  }
+  // Initial image on load
+  updateConfigImage();
+
+  function calculateResistance() {
+    const configType = document.getElementById("configType").value;
+    const inputValues = document.getElementById("resistorsInput").value.trim();
+    const calcResultElem = document.getElementById("calcResult");
+    calcResultElem.innerHTML = "";
+
+    if (!inputValues) {
+      calcResultElem.innerHTML =
+        "<div class='text-danger'>Please enter resistor values.</div>";
+      return;
+    }
+
+    // Helper function to check numeric array
+    function isInvalid(arr) {
+      return arr.some(val => isNaN(val));
+    }
+
+    let resistors;
+    let result;
+
+    switch (configType) {
+      case "series":
+        // Series: sum all resistor values
+        resistors = inputValues.split(",").map(r => parseFloat(r));
+        if (isInvalid(resistors)) {
+          calcResultElem.innerHTML =
+            "<div class='text-danger'>Invalid resistor values. Please enter numeric values separated by commas.</div>";
+          return;
+        }
+        result = resistors.reduce((acc, val) => acc + val, 0);
+        calcResultElem.innerHTML = successResult(result);
+        break;
+
+      case "parallel":
+        // Parallel: 1/R_total = sum(1/R_i)
+        resistors = inputValues.split(",").map(r => parseFloat(r));
+        if (isInvalid(resistors)) {
+          calcResultElem.innerHTML =
+            "<div class='text-danger'>Invalid resistor values. Please enter numeric values separated by commas.</div>";
+          return;
+        }
+        let inverseSum = resistors.reduce((acc, val) => acc + 1 / val, 0);
+        result = 1 / inverseSum;
+        calcResultElem.innerHTML = successResult(result);
+        break;
+
+      case "delta-star":
+        // Delta to Star: requires exactly 3 resistors: R_ab, R_bc, R_ca
+        resistors = inputValues.split(",").map(r => parseFloat(r));
+        if (resistors.length !== 3 || isInvalid(resistors)) {
+          calcResultElem.innerHTML =
+            "<div class='text-danger'>Delta-Star requires exactly 3 numeric resistor values (e.g. 100,200,300).</div>";
+          return;
+        }
+        const [Rab, Rbc, Rca] = resistors;
+        const sumDelta = Rab + Rbc + Rca;
+        const Ra = (Rab * Rca) / sumDelta; // R_A
+        const Rb = (Rab * Rbc) / sumDelta; // R_B
+        const Rc = (Rbc * Rca) / sumDelta; // R_C
+        calcResultElem.innerHTML = `
+          <div class='alert alert-info'>
+            <strong>Delta-Star Transform Results:</strong><br/>
+            R<sub>A</sub> = ${Ra.toFixed(2)} Ω<br/>
+            R<sub>B</sub> = ${Rb.toFixed(2)} Ω<br/>
+            R<sub>C</sub> = ${Rc.toFixed(2)} Ω
+          </div>`;
+        break;
+
+      case "star-delta":
+        // Star to Delta: requires exactly 3 resistors: R_A, R_B, R_C
+        resistors = inputValues.split(",").map(r => parseFloat(r));
+        if (resistors.length !== 3 || isInvalid(resistors)) {
+          calcResultElem.innerHTML =
+            "<div class='text-danger'>Star-Delta requires exactly 3 numeric resistor values (e.g. 100,200,300).</div>";
+          return;
+        }
+        const [R_A, R_B, R_C] = resistors;
+        // R_AB = R_A + R_B + (R_A*R_B / R_C)
+        // R_BC = R_B + R_C + (R_B * R_C / R_A)
+        // R_CA = R_C + R_A + (R_C * R_A / R_B)
+        const R_AB = R_A + R_B + (R_A * R_B) / R_C;
+        const R_BC = R_B + R_C + (R_B * R_C) / R_A;
+        const R_CA = R_C + R_A + (R_C * R_A) / R_B;
+        calcResultElem.innerHTML = `
+          <div class='alert alert-info'>
+            <strong>Star-Delta Transform Results:</strong><br/>
+            R<sub>AB</sub> = ${R_AB.toFixed(2)} Ω<br/>
+            R<sub>BC</sub> = ${R_BC.toFixed(2)} Ω<br/>
+            R<sub>CA</sub> = ${R_CA.toFixed(2)} Ω
+          </div>`;
+        break;
+
+      case "series-parallel":
+        // Series-Parallel: Groups separated by semicolons. Each group is a series connection.
+        // Example input: "100,200;220,330"
+        const groups = inputValues
+          .split(";")
+          .map(g => g.trim())
+          .filter(g => g !== "");
+        if (groups.length < 2) {
+          calcResultElem.innerHTML =
+            "<div class='text-danger'>For series-parallel, enter at least two groups (e.g. 100,200;220,330).</div>";
+          return;
+        }
+        let groupSums = [];
+        for (let i = 0; i < groups.length; i++) {
+          let values = groups[i]
+            .split(",")
+            .map(r => parseFloat(r.trim()));
+          if (isInvalid(values)) {
+            calcResultElem.innerHTML =
+              "<div class='text-danger'>Invalid resistor values in one of the groups. Please check your input.</div>";
+            return;
+          }
+          let sumGroup = values.reduce((acc, val) => acc + val, 0);
+          groupSums.push(sumGroup);
+        }
+        let invSum = groupSums.reduce((acc, val) => acc + 1 / val, 0);
+        result = 1 / invSum;
+        calcResultElem.innerHTML = successResult(result);
+        break;
+
+      default:
+        calcResultElem.innerHTML = "<div class='text-danger'>Unknown configuration.</div>";
+    }
+  }
+
+  // Helper to format success message
+  function successResult(value) {
+    return `
+      <div class='alert alert-success result-text'>
+        Total Resistance = ${value.toFixed(2)} Ω
+      </div>
+    `;
+  }
+
+  /************************************************************
+   * CONDUCTOR RESISTANCE
+   ************************************************************/
+  function calculateConductorResistance() {
+    const resistivity = parseFloat(document.getElementById("resistivity").value);
+    const length = parseFloat(document.getElementById("length").value);
+    const area = parseFloat(document.getElementById("area").value);
+    const conductorResultElem = document.getElementById("conductorResult");
+
+    // Basic validation
+    if (
+      isNaN(resistivity) || 
+      isNaN(length) || 
+      isNaN(area) ||
+      resistivity <= 0 || 
+      length <= 0 || 
+      area <= 0
+    ) {
+      conductorResultElem.innerHTML = 
+        "<div class='text-danger'>Please enter valid positive numeric values for ρ, L, and A.</div>";
+      return;
+    }
+
+    // R = ρ * (L / A)
+    const R = resistivity * (length / area);
+
+    conductorResultElem.innerHTML = `
+      <div class='alert alert-success result-text'>
+        Conductor Resistance = ${R.toExponential(3)} Ω
+      </div>
+    `;
+  }
+
+  /************************************************************
+   * COLOR CODE: Update background color on selection + compute
+   ************************************************************/
+  const resistorColorMap = {
+    "0": "black",
+    "1": "brown",
+    "2": "red",
+    "3": "orange",
+    "4": "yellow",
+    "5": "green",
+    "6": "blue",
+    "7": "violet",
+    "8": "gray",
+    "9": "white"
+  };
+
+  const multiplierColorMap = {
+    "1": "black",
+    "10": "brown",
+    "100": "red",
+    "1000": "orange",
+    "10000": "yellow",
+    "100000": "green",
+    "1000000": "blue",
+    "10000000": "violet",
+    "0.1": "gold",
+    "0.01": "silver"
+  };
+
+  const toleranceColorMap = {
+    "±1%": "brown",
+    "±2%": "red",
+    "±5%": "gold",
+    "±10%": "silver"
+  };
+
+  // Update select element background based on selected color
+  function updateSelectColor(selectId, mapping) {
+    const selectElem = document.getElementById(selectId);
+    const val = selectElem.value;
+    const color = mapping[val];
+    if (color) {
+      selectElem.style.backgroundColor = color;
+      // Adjust text color for readability
+      if (["black", "brown", "red", "blue", "violet"].includes(color)) {
+        selectElem.style.color = "white";
+      } else {
+        selectElem.style.color = "black";
+      }
+    }
+  }
+
+  // Event listeners to update colors
+  document.getElementById("band1").addEventListener("change", function() {
+    updateSelectColor("band1", resistorColorMap);
+  });
+  document.getElementById("band2").addEventListener("change", function() {
+    updateSelectColor("band2", resistorColorMap);
+  });
+  document.getElementById("bandMultiplier").addEventListener("change", function() {
+    updateSelectColor("bandMultiplier", multiplierColorMap);
+  });
+  document.getElementById("bandTolerance").addEventListener("change", function() {
+    updateSelectColor("bandTolerance", toleranceColorMap);
+  });
+
+  // Initialize colors on page load
+  updateSelectColor("band1", resistorColorMap);
+  updateSelectColor("band2", resistorColorMap);
+  updateSelectColor("bandMultiplier", multiplierColorMap);
+  updateSelectColor("bandTolerance", toleranceColorMap);
+
+  // Calculate resistor value from color code (4-band example)
+  function calculateColorCode() {
+    const band1 = parseInt(document.getElementById("band1").value);
+    const band2 = parseInt(document.getElementById("band2").value);
+    const multiplier = parseFloat(document.getElementById("bandMultiplier").value);
+    const tolerance = document.getElementById("bandTolerance").value;
+
+    // resistor value from color code: (Band1 Band2) * multiplier
+    const baseValue = (band1 * 10 + band2) * multiplier;
+
+    document.getElementById("colorCodeResult").innerHTML = `
+      <div class='alert alert-success result-text'>
+        Resistor Value = ${baseValue} Ω ${tolerance}
+      </div>
+    `;
+  }
+</script>
+</body>
+</html>
